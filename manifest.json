@@ -1,0 +1,22 @@
+{
+  "name": "Made Checklist",
+  "short_name": "Checklist",
+  "description": "Monthly and Daily Checklists for Made ventures and weekday goals.",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#0b0b0c",
+  "theme_color": "#e8a256",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "icon-192.png",
+      "type": "image/png",
+      "sizes": "192x192"
+    },
+    {
+      "src": "icon-512.png",
+      "type": "image/png",
+      "sizes": "512x512"
+    }
+  ]
+}

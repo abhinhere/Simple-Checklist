@@ -2,8 +2,12 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>Made — Monthly Checklist</title>
+<meta name="theme-color" content="#e8a256">
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="icon-192.png">
+<link rel="icon" type="image/png" href="icon-192.png">
 <style>
   :root{
     --bg:#0b0b0c;
@@ -262,7 +266,7 @@ function updateProgress(){
 
 async function saveState(){
   try{
-    await window.storage.set(STORAGE_KEY, JSON.stringify(state), false);
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
   }catch(e){
     console.error('Save failed', e);
   }
@@ -270,9 +274,9 @@ async function saveState(){
 
 async function loadState(){
   try{
-    const result = await window.storage.get(STORAGE_KEY, false);
-    if(result && result.value){
-      state = JSON.parse(result.value);
+    const result = localStorage.getItem(STORAGE_KEY);
+    if(result){
+      state = JSON.parse(result);
     }
   }catch(e){
     state = {};
@@ -363,7 +367,7 @@ function updateDailyProgress(){
 
 async function saveDailyState(){
   try{
-    await window.storage.set(DAILY_STORAGE_KEY, JSON.stringify(dailyState), false);
+    localStorage.setItem(DAILY_STORAGE_KEY, JSON.stringify(dailyState));
   }catch(e){
     console.error('Save failed', e);
   }
@@ -371,9 +375,9 @@ async function saveDailyState(){
 
 async function loadDailyState(){
   try{
-    const result = await window.storage.get(DAILY_STORAGE_KEY, false);
-    if(result && result.value){
-      dailyState = JSON.parse(result.value);
+    const result = localStorage.getItem(DAILY_STORAGE_KEY);
+    if(result){
+      dailyState = JSON.parse(result);
     }
   }catch(e){
     dailyState = {};
@@ -436,6 +440,14 @@ document.getElementById('dailyResetBtn').addEventListener('click', async () => {
   await loadState();
   render();
 })();
+
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('./sw.js')
+      .then((reg) => console.log('Service Worker registered', reg))
+      .catch((err) => console.error('Service Worker registration failed', err));
+  });
+}
 </script>
 
 </body>
