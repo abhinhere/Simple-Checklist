@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Made — Monthly Checklist</title>
+<style>
+  :root{
+    --bg:#0b0b0c;
+    --card:#141416;
+    --line:#232326;
+    --text:#f2f1ee;
+    --sub:#8a8a8f;
+    --accent:#e8a256;
+    --accent2:#6fa8dc;
+    --done:#4d7358;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--text);
+    font-family:'Segoe UI',system-ui,-apple-system,sans-serif;
+    padding:20px 16px 60px;
+  }
+  header{
+    margin-bottom:24px;
+  }
+  header .eyebrow{
+    color:var(--accent);
+    font-size:12px;
+    letter-spacing:.14em;
+    text-transform:uppercase;
+    font-weight:600;
+  }
+  header h1{
+    margin:4px 0 6px;
+    font-size:26px;
+    font-weight:700;
+  }
+  header p{
+    margin:0;
+    color:var(--sub);
+    font-size:13px;
+  }
+  .progress-wrap{
+    margin:18px 0 28px;
+  }
+  .progress-bar{
+    height:6px;
+    border-radius:3px;
+    background:var(--line);
+    overflow:hidden;
+  }
+  .progress-fill{
+    height:100%;
+    background:var(--accent);
+    width:0%;
+    transition:width .3s ease;
+  }
+  .progress-label{
+    margin-top:6px;
+    font-size:12px;
+    color:var(--sub);
+  }
+  .week{
+    margin-bottom:22px;
+    border:1px solid var(--line);
+    border-radius:12px;
+    overflow:hidden;
+    background:var(--card);
+  }
+  .week-header{
+    padding:14px 16px;
+    display:flex;
+    justify-content:space-between;
+    align-items:baseline;
+    border-bottom:1px solid var(--line);
+  }
+  .week-header .wk{
+    font-size:11px;
+    color:var(--sub);
+    letter-spacing:.1em;
+    text-transform:uppercase;
+    display:block;
+  }
+  .week-header .biz{
+    font-size:18px;
+    font-weight:700;
+    margin-top:2px;
+  }
+  .week-count{
+    font-size:12px;
+    color:var(--sub);
+  }
+  ul{
+    list-style:none;
+    margin:0;
+    padding:0;
+  }
+  li{
+    border-top:1px solid var(--line);
+  }
+  li:first-child{ border-top:none; }
+  label{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    padding:13px 16px;
+    cursor:pointer;
+    -webkit-tap-highlight-color:transparent;
+  }
+  .box{
+    width:20px;
+    height:20px;
+    min-width:20px;
+    border-radius:6px;
+    border:1.5px solid var(--sub);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    transition:all .15s ease;
+  }
+  .box svg{
+    width:12px;
+    height:12px;
+    opacity:0;
+    transition:opacity .15s ease;
+  }
+  input{ display:none; }
+  input:checked + .box{
+    background:var(--done);
+    border-color:var(--done);
+  }
+  input:checked + .box svg{ opacity:1; }
+  .task{
+    font-size:14.5px;
+    transition:color .15s ease, opacity .15s ease;
+  }
+  input:checked ~ .task{
+    color:var(--sub);
+    text-decoration:line-through;
+    opacity:.7;
+  }
+  .reset{
+    display:block;
+    margin:28px auto 0;
+    background:transparent;
+    color:var(--sub);
+    border:1px solid var(--line);
+    padding:10px 18px;
+    border-radius:8px;
+    font-size:13px;
+    cursor:pointer;
+  }
+  .reset:active{ opacity:.6; }
+  .section-title{
+    margin:36px 0 14px;
+    font-size:12px;
+    letter-spacing:.14em;
+    text-transform:uppercase;
+    color:var(--accent2);
+    font-weight:700;
+    border-top:1px solid var(--line);
+    padding-top:24px;
+  }
+  .section-title:first-of-type{
+    border-top:none;
+    padding-top:0;
+    margin-top:0;
+  }
+  .daily-date{
+    font-size:12px;
+    color:var(--sub);
+    margin:-10px 0 14px;
+  }
+  .loading{
+    text-align:center;
+    color:var(--sub);
+    padding:40px 0;
+    font-size:13px;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <span class="eyebrow">Made</span>
+  <h1>Checklist</h1>
+</header>
+
+<div class="section-title">Monthly — Made ventures</div>
+<p class="daily-date" id="monthLabel">Loading…</p>
+<div class="progress-wrap">
+  <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+  <div class="progress-label" id="progressLabel">Loading…</div>
+</div>
+<div id="content" class="loading">Loading your progress…</div>
+<button class="reset" id="resetBtn">Reset this month</button>
+
+<div class="section-title">Daily — Weekday goals</div>
+<p class="daily-date" id="dailyDateLabel">Loading…</p>
+<div class="progress-wrap">
+  <div class="progress-bar"><div class="progress-fill" id="dailyProgressFill"></div></div>
+  <div class="progress-label" id="dailyProgressLabel">Loading…</div>
+</div>
+<div id="dailyContent" class="loading">Loading your progress…</div>
+<button class="reset" id="dailyResetBtn">Reset today</button>
+
+<script>
+const DATA = [
+  { week: "Week 1", biz: "MadeWebs", tasks: [
+    "20 cold calls",
+    "Client work updates",
+    "Instagram/content posting",
+    "Monthly lead review"
+  ]},
+  { week: "Week 2", biz: "MadeStore", tasks: [
+    "Monthly product/content work",
+    "Instagram checking",
+    "Brand activity review",
+    "Monthly store review"
+  ]},
+  { week: "Week 3", biz: "MadeProducts", tasks: [
+    "Monthly product shoot",
+    "Monthly scheduling",
+    "Monthly reel/video",
+    "Instagram checking"
+  ]},
+  { week: "Week 4", biz: "MadeFit", tasks: [
+    "Monthly product shoot",
+    "Product photos",
+    "Monthly review",
+    "Instagram/content checking"
+  ]}
+];
+
+function currentMonthKey(){
+  const d = new Date();
+  return `made-checklist-state_${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}`;
+}
+const STORAGE_KEY = currentMonthKey();
+let state = {};
+
+function taskId(wi, ti){ return `w${wi}_t${ti}`; }
+
+function totalTasks(){
+  return DATA.reduce((sum, w) => sum + w.tasks.length, 0);
+}
+
+function checkedCount(){
+  return Object.values(state).filter(Boolean).length;
+}
+
+function updateProgress(){
+  const total = totalTasks();
+  const done = checkedCount();
+  const pct = total ? Math.round((done/total)*100) : 0;
+  document.getElementById('progressFill').style.width = pct + '%';
+  document.getElementById('progressLabel').textContent = `${done} of ${total} tasks done · ${pct}%`;
+}
+
+async function saveState(){
+  try{
+    await window.storage.set(STORAGE_KEY, JSON.stringify(state), false);
+  }catch(e){
+    console.error('Save failed', e);
+  }
+}
+
+async function loadState(){
+  try{
+    const result = await window.storage.get(STORAGE_KEY, false);
+    if(result && result.value){
+      state = JSON.parse(result.value);
+    }
+  }catch(e){
+    state = {};
+  }
+}
+
+function render(){
+  const content = document.getElementById('content');
+  content.classList.remove('loading');
+  content.innerHTML = '';
+
+  DATA.forEach((w, wi) => {
+    const doneCount = w.tasks.filter((_, ti) => state[taskId(wi, ti)]).length;
+
+    const weekDiv = document.createElement('div');
+    weekDiv.className = 'week';
+
+    const headerDiv = document.createElement('div');
+    headerDiv.className = 'week-header';
+    headerDiv.innerHTML = `
+      <div>
+        <span class="wk">${w.week}</span>
+        <span class="biz">${w.biz}</span>
+      </div>
+      <span class="week-count" id="count_${wi}">${doneCount}/${w.tasks.length}</span>
+    `;
+    weekDiv.appendChild(headerDiv);
+
+    const ul = document.createElement('ul');
+    w.tasks.forEach((task, ti) => {
+      const id = taskId(wi, ti);
+      const li = document.createElement('li');
+      const checked = !!state[id];
+      li.innerHTML = `
+        <label>
+          <input type="checkbox" id="${id}" ${checked ? 'checked' : ''}>
+          <span class="box">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#0b0b0c" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="20 6 9 17 4 12"></polyline>
+            </svg>
+          </span>
+          <span class="task">${task}</span>
+        </label>
+      `;
+      ul.appendChild(li);
+      li.querySelector('input').addEventListener('change', (e) => {
+        state[id] = e.target.checked;
+        document.getElementById(`count_${wi}`).textContent =
+          `${w.tasks.filter((_, t2) => state[taskId(wi, t2)]).length}/${w.tasks.length}`;
+        updateProgress();
+        saveState();
+      });
+    });
+    weekDiv.appendChild(ul);
+    content.appendChild(weekDiv);
+  });
+
+  updateProgress();
+}
+
+document.getElementById('resetBtn').addEventListener('click', async () => {
+  state = {};
+  await saveState();
+  render();
+});
+
+// ---------- Daily goals ----------
+const DAILY_TASKS = ["Gym", "College", "Skill", "Placement Prep"];
+let dailyState = {};
+
+function currentDayKey(){
+  const d = new Date();
+  return `made-daily-state_${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+}
+const DAILY_STORAGE_KEY = currentDayKey();
+
+function dailyDoneCount(){
+  return DAILY_TASKS.filter((_, i) => dailyState[`d${i}`]).length;
+}
+
+function updateDailyProgress(){
+  const total = DAILY_TASKS.length;
+  const done = dailyDoneCount();
+  const pct = total ? Math.round((done/total)*100) : 0;
+  document.getElementById('dailyProgressFill').style.width = pct + '%';
+  document.getElementById('dailyProgressLabel').textContent = `${done} of ${total} goals done · ${pct}%`;
+}
+
+async function saveDailyState(){
+  try{
+    await window.storage.set(DAILY_STORAGE_KEY, JSON.stringify(dailyState), false);
+  }catch(e){
+    console.error('Save failed', e);
+  }
+}
+
+async function loadDailyState(){
+  try{
+    const result = await window.storage.get(DAILY_STORAGE_KEY, false);
+    if(result && result.value){
+      dailyState = JSON.parse(result.value);
+    }
+  }catch(e){
+    dailyState = {};
+  }
+}
+
+function renderDaily(){
+  const content = document.getElementById('dailyContent');
+  content.classList.remove('loading');
+  content.innerHTML = '';
+
+  const weekDiv = document.createElement('div');
+  weekDiv.className = 'week';
+  const ul = document.createElement('ul');
+
+  DAILY_TASKS.forEach((task, i) => {
+    const id = `d${i}`;
+    const li = document.createElement('li');
+    const checked = !!dailyState[id];
+    li.innerHTML = `
+      <label>
+        <input type="checkbox" id="${id}" ${checked ? 'checked' : ''}>
+        <span class="box">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#0b0b0c" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="20 6 9 17 4 12"></polyline>
+          </svg>
+        </span>
+        <span class="task">${task}</span>
+      </label>
+    `;
+    ul.appendChild(li);
+    li.querySelector('input').addEventListener('change', (e) => {
+      dailyState[id] = e.target.checked;
+      updateDailyProgress();
+      saveDailyState();
+    });
+  });
+
+  weekDiv.appendChild(ul);
+  content.appendChild(weekDiv);
+  updateDailyProgress();
+}
+
+document.getElementById('dailyResetBtn').addEventListener('click', async () => {
+  dailyState = {};
+  await saveDailyState();
+  renderDaily();
+});
+
+(async function initDaily(){
+  const dateLabel = new Date().toLocaleString('default', { weekday: 'long', month: 'long', day: 'numeric' });
+  document.getElementById('dailyDateLabel').textContent = dateLabel;
+  await loadDailyState();
+  renderDaily();
+})();
+
+(async function init(){
+  const monthName = new Date().toLocaleString('default', { month: 'long', year: 'numeric' });
+  document.getElementById('monthLabel').textContent = monthName;
+  await loadState();
+  render();
+})();
+</script>
+
+</body>
+</html>
