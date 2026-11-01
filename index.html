@@ -3,52 +3,136 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>Made — Monthly Checklist</title>
+<title>Made — Checklist</title>
 <meta name="theme-color" content="#e8a256">
 <link rel="manifest" href="manifest.json">
 <link rel="apple-touch-icon" href="icon-192.png">
 <link rel="icon" type="image/png" href="icon-192.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
   :root{
-    --bg:#0b0b0c;
-    --card:#141416;
-    --line:#232326;
-    --text:#f2f1ee;
-    --sub:#8a8a8f;
+    --bg:#0b0b0d;
+    --card:#141418;
+    --line:#222329;
+    --text:#f3f3f5;
+    --sub:#8c8d96;
     --accent:#e8a256;
     --accent2:#6fa8dc;
+    --accent2-border:rgba(111, 168, 220, 0.24);
+    --accent-border:rgba(232, 162, 86, 0.22);
     --done:#4d7358;
+    --radius-lg:16px;
+    --radius-md:12px;
   }
   *{box-sizing:border-box;}
   body{
     margin:0;
     background:var(--bg);
     color:var(--text);
-    font-family:'Segoe UI',system-ui,-apple-system,sans-serif;
-    padding:20px 16px 60px;
+    font-family:'Plus Jakarta Sans','Segoe UI',system-ui,-apple-system,sans-serif;
+    padding:24px 16px 64px;
+    -webkit-font-smoothing:antialiased;
+  }
+  .app-container{
+    max-width:620px;
+    margin:0 auto;
   }
   header{
     margin-bottom:24px;
+    padding:0 4px;
   }
   header .eyebrow{
     color:var(--accent);
     font-size:12px;
     letter-spacing:.14em;
     text-transform:uppercase;
-    font-weight:600;
+    font-weight:700;
   }
   header h1{
     margin:4px 0 6px;
-    font-size:26px;
-    font-weight:700;
+    font-size:28px;
+    font-weight:800;
+    letter-spacing:-0.02em;
   }
   header p{
     margin:0;
     color:var(--sub);
     font-size:13px;
   }
+
+  /* Section cards for visual separation */
+  .section-card{
+    border-radius:var(--radius-lg);
+    padding:20px 18px 20px;
+    margin-bottom:28px;
+    position:relative;
+  }
+  .section-daily{
+    background:linear-gradient(180deg, rgba(20, 25, 36, 0.85) 0%, rgba(14, 17, 25, 0.95) 100%);
+    border:1px solid var(--accent2-border);
+    box-shadow:0 10px 32px -6px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(111, 168, 220, 0.08);
+  }
+  .section-monthly{
+    background:linear-gradient(180deg, rgba(22, 21, 24, 0.65) 0%, rgba(16, 16, 19, 0.85) 100%);
+    border:1px solid var(--accent-border);
+    box-shadow:0 10px 32px -6px rgba(0, 0, 0, 0.35), 0 0 0 1px rgba(232, 162, 86, 0.05);
+  }
+
+  /* Section Header */
+  .section-header{
+    margin-bottom:14px;
+  }
+  .section-tag-row{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:6px;
+  }
+  .badge{
+    display:inline-flex;
+    align-items:center;
+    gap:6px;
+    font-size:11px;
+    letter-spacing:.1em;
+    text-transform:uppercase;
+    font-weight:700;
+    padding:4px 10px;
+    border-radius:20px;
+  }
+  .badge-daily{
+    background:rgba(111, 168, 220, 0.12);
+    color:var(--accent2);
+    border:1px solid rgba(111, 168, 220, 0.28);
+  }
+  .badge-monthly{
+    background:rgba(232, 162, 86, 0.12);
+    color:var(--accent);
+    border:1px solid rgba(232, 162, 86, 0.28);
+  }
+  .badge-dot{
+    width:6px;
+    height:6px;
+    border-radius:50%;
+    background:currentColor;
+    box-shadow:0 0 6px currentColor;
+  }
+  .section-date{
+    font-size:12.5px;
+    color:var(--sub);
+    font-weight:500;
+  }
+  .section-title{
+    margin:0;
+    font-size:20px;
+    font-weight:700;
+    letter-spacing:-0.01em;
+  }
+
+  /* Progress bar */
   .progress-wrap{
-    margin:18px 0 28px;
+    margin:14px 0 20px;
   }
   .progress-bar{
     height:6px;
@@ -58,45 +142,73 @@
   }
   .progress-fill{
     height:100%;
-    background:var(--accent);
     width:0%;
+    border-radius:3px;
     transition:width .3s ease;
   }
+  .fill-daily{
+    background:linear-gradient(90deg, #4ea8de, #6fa8dc);
+  }
+  .fill-monthly{
+    background:linear-gradient(90deg, #d9822b, #e8a256);
+  }
   .progress-label{
-    margin-top:6px;
+    margin-top:7px;
     font-size:12px;
     color:var(--sub);
+    font-weight:500;
   }
+
+  /* Week / task containers */
   .week{
-    margin-bottom:22px;
+    margin-bottom:14px;
     border:1px solid var(--line);
-    border-radius:12px;
+    border-radius:var(--radius-md);
     overflow:hidden;
     background:var(--card);
+    transition:border-color .2s ease;
+  }
+  .week:last-child{
+    margin-bottom:0;
+  }
+  .week:hover{
+    border-color:rgba(255,255,255,0.12);
+  }
+  .section-daily .week{
+    border-color:rgba(111, 168, 220, 0.16);
+    background:rgba(14, 18, 26, 0.9);
   }
   .week-header{
-    padding:14px 16px;
+    padding:13px 16px;
     display:flex;
     justify-content:space-between;
     align-items:baseline;
     border-bottom:1px solid var(--line);
+    background:rgba(255, 255, 255, 0.015);
   }
   .week-header .wk{
     font-size:11px;
     color:var(--sub);
-    letter-spacing:.1em;
+    letter-spacing:.08em;
     text-transform:uppercase;
     display:block;
+    font-weight:600;
   }
   .week-header .biz{
-    font-size:18px;
+    font-size:17px;
     font-weight:700;
     margin-top:2px;
   }
   .week-count{
     font-size:12px;
     color:var(--sub);
+    font-weight:600;
+    background:rgba(255, 255, 255, 0.05);
+    padding:2px 8px;
+    border-radius:10px;
   }
+
+  /* Task items */
   ul{
     list-style:none;
     margin:0;
@@ -104,15 +216,23 @@
   }
   li{
     border-top:1px solid var(--line);
+    transition:background .15s ease;
+  }
+  .section-daily li{
+    border-top-color:rgba(111, 168, 220, 0.12);
   }
   li:first-child{ border-top:none; }
+  li:hover{
+    background:rgba(255,255,255,0.02);
+  }
   label{
     display:flex;
     align-items:center;
-    gap:12px;
+    gap:13px;
     padding:13px 16px;
     cursor:pointer;
     -webkit-tap-highlight-color:transparent;
+    user-select:none;
   }
   .box{
     width:20px;
@@ -123,93 +243,187 @@
     display:flex;
     align-items:center;
     justify-content:center;
-    transition:all .15s ease;
+    transition:all .18s cubic-bezier(0.16, 1, 0.3, 1);
+    background:rgba(255,255,255,0.02);
   }
   .box svg{
     width:12px;
     height:12px;
     opacity:0;
-    transition:opacity .15s ease;
+    transform:scale(0.6);
+    transition:opacity .15s ease, transform .18s cubic-bezier(0.34, 1.56, 0.64, 1);
   }
   input{ display:none; }
   input:checked + .box{
     background:var(--done);
     border-color:var(--done);
   }
-  input:checked + .box svg{ opacity:1; }
+  input:checked + .box.box-daily{
+    background:var(--accent2);
+    border-color:var(--accent2);
+  }
+  input:checked + .box svg{
+    opacity:1;
+    transform:scale(1);
+  }
   .task{
     font-size:14.5px;
-    transition:color .15s ease, opacity .15s ease;
+    font-weight:450;
+    transition:color .18s ease, opacity .18s ease;
   }
   input:checked ~ .task{
     color:var(--sub);
     text-decoration:line-through;
-    opacity:.7;
+    opacity:.65;
+  }
+
+  /* Section Actions / Reset */
+  .section-actions{
+    display:flex;
+    justify-content:center;
+    margin-top:18px;
   }
   .reset{
-    display:block;
-    margin:28px auto 0;
-    background:transparent;
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    gap:8px;
+    background:rgba(255,255,255,0.03);
     color:var(--sub);
     border:1px solid var(--line);
-    padding:10px 18px;
+    padding:9px 18px;
     border-radius:8px;
-    font-size:13px;
+    font-size:12.5px;
+    font-weight:500;
     cursor:pointer;
+    font-family:inherit;
+    transition:all .2s ease;
   }
-  .reset:active{ opacity:.6; }
-  .section-title{
-    margin:36px 0 14px;
-    font-size:12px;
+  .reset:hover{
+    color:var(--text);
+    background:rgba(255,255,255,0.06);
+    border-color:rgba(255,255,255,0.18);
+  }
+  .reset:active{
+    transform:scale(0.97);
+  }
+  .reset-icon{
+    width:13px;
+    height:13px;
+    stroke:currentColor;
+    opacity:.8;
+    transition:transform .3s ease;
+  }
+  .reset:hover .reset-icon{
+    transform:rotate(-45deg);
+  }
+
+  /* Section Divider */
+  .section-divider{
+    display:flex;
+    align-items:center;
+    gap:14px;
+    margin:32px 0 28px;
+    padding:0 8px;
+  }
+  .divider-line{
+    flex:1;
+    height:1px;
+    background:linear-gradient(90deg, transparent, var(--line), transparent);
+  }
+  .divider-text{
+    font-size:11px;
     letter-spacing:.14em;
     text-transform:uppercase;
-    color:var(--accent2);
+    color:#585963;
     font-weight:700;
-    border-top:1px solid var(--line);
-    padding-top:24px;
   }
-  .section-title:first-of-type{
-    border-top:none;
-    padding-top:0;
-    margin-top:0;
-  }
-  .daily-date{
-    font-size:12px;
-    color:var(--sub);
-    margin:-10px 0 14px;
-  }
+
   .loading{
     text-align:center;
     color:var(--sub);
-    padding:40px 0;
+    padding:36px 0;
     font-size:13px;
   }
 </style>
 </head>
 <body>
 
-<header>
-  <span class="eyebrow">Made</span>
-  <h1>Checklist</h1>
-</header>
+<div class="app-container">
+  <header>
+    <span class="eyebrow">Made</span>
+    <h1>Checklist</h1>
+  </header>
 
-<div class="section-title">Monthly — Made ventures</div>
-<p class="daily-date" id="monthLabel">Loading…</p>
-<div class="progress-wrap">
-  <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
-  <div class="progress-label" id="progressLabel">Loading…</div>
-</div>
-<div id="content" class="loading">Loading your progress…</div>
-<button class="reset" id="resetBtn">Reset this month</button>
+  <!-- DAILY SECTION (FIRST) -->
+  <section class="section-card section-daily" aria-labelledby="dailyHeading">
+    <div class="section-header">
+      <div class="section-tag-row">
+        <span class="badge badge-daily">
+          <span class="badge-dot"></span>
+          Daily Focus
+        </span>
+        <span class="section-date" id="dailyDateLabel">Loading…</span>
+      </div>
+      <h2 id="dailyHeading" class="section-title">Weekday Goals</h2>
+    </div>
 
-<div class="section-title">Daily — Weekday goals</div>
-<p class="daily-date" id="dailyDateLabel">Loading…</p>
-<div class="progress-wrap">
-  <div class="progress-bar"><div class="progress-fill" id="dailyProgressFill"></div></div>
-  <div class="progress-label" id="dailyProgressLabel">Loading…</div>
+    <div class="progress-wrap">
+      <div class="progress-bar"><div class="progress-fill fill-daily" id="dailyProgressFill"></div></div>
+      <div class="progress-label" id="dailyProgressLabel">Loading…</div>
+    </div>
+
+    <div id="dailyContent" class="loading">Loading your progress…</div>
+
+    <div class="section-actions">
+      <button class="reset" id="dailyResetBtn" title="Reset today's daily goals">
+        <svg class="reset-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/>
+          <path d="M3 3v5h5"/>
+        </svg>
+        <span>Reset today</span>
+      </button>
+    </div>
+  </section>
+
+  <!-- VISUAL SEPARATOR -->
+  <div class="section-divider" role="separator" aria-hidden="true">
+    <span class="divider-line"></span>
+    <span class="divider-text">Monthly Ventures</span>
+    <span class="divider-line"></span>
+  </div>
+
+  <!-- MONTHLY SECTION (SECOND) -->
+  <section class="section-card section-monthly" aria-labelledby="monthlyHeading">
+    <div class="section-header">
+      <div class="section-tag-row">
+        <span class="badge badge-monthly">
+          <span class="badge-dot"></span>
+          Monthly Overview
+        </span>
+        <span class="section-date" id="monthLabel">Loading…</span>
+      </div>
+      <h2 id="monthlyHeading" class="section-title">Made Ventures</h2>
+    </div>
+
+    <div class="progress-wrap">
+      <div class="progress-bar"><div class="progress-fill fill-monthly" id="progressFill"></div></div>
+      <div class="progress-label" id="progressLabel">Loading…</div>
+    </div>
+
+    <div id="content" class="loading">Loading your progress…</div>
+
+    <div class="section-actions">
+      <button class="reset" id="resetBtn" title="Reset this month's tasks">
+        <svg class="reset-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/>
+          <path d="M3 3v5h5"/>
+        </svg>
+        <span>Reset this month</span>
+      </button>
+    </div>
+  </section>
 </div>
-<div id="dailyContent" class="loading">Loading your progress…</div>
-<button class="reset" id="dailyResetBtn">Reset today</button>
 
 <script>
 const DATA = [
@@ -400,7 +614,7 @@ function renderDaily(){
     li.innerHTML = `
       <label>
         <input type="checkbox" id="${id}" ${checked ? 'checked' : ''}>
-        <span class="box">
+        <span class="box box-daily">
           <svg viewBox="0 0 24 24" fill="none" stroke="#0b0b0c" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
             <polyline points="20 6 9 17 4 12"></polyline>
           </svg>
@@ -452,3 +666,4 @@ if ('serviceWorker' in navigator) {
 
 </body>
 </html>
+
