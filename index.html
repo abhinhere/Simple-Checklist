@@ -1,530 +1,1114 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>Made — Checklist</title>
-<meta name="theme-color" content="#e8a256">
-<link rel="manifest" href="manifest.json">
-<link rel="apple-touch-icon" href="icon-192.png">
-<link rel="icon" type="image/png" href="icon-192.png">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-<style>
-  :root{
-    --bg:#0b0b0d;
-    --card:#141418;
-    --line:#222329;
-    --text:#f3f3f5;
-    --sub:#8c8d96;
-    --accent:#e8a256;
-    --accent2:#6fa8dc;
-    --accent2-border:rgba(111, 168, 220, 0.24);
-    --accent-border:rgba(232, 162, 86, 0.22);
-    --done:#4d7358;
-    --radius-lg:16px;
-    --radius-md:12px;
-  }
-  *{box-sizing:border-box;}
-  body{
-    margin:0;
-    background:var(--bg);
-    color:var(--text);
-    font-family:'Plus Jakarta Sans','Segoe UI',system-ui,-apple-system,sans-serif;
-    padding:24px 16px 64px;
-    -webkit-font-smoothing:antialiased;
-  }
-  .app-container{
-    max-width:620px;
-    margin:0 auto;
-  }
-  header{
-    margin-bottom:24px;
-    padding:0 4px;
-  }
-  header .eyebrow{
-    color:var(--accent);
-    font-size:12px;
-    letter-spacing:.14em;
-    text-transform:uppercase;
-    font-weight:700;
-  }
-  header h1{
-    margin:4px 0 6px;
-    font-size:28px;
-    font-weight:800;
-    letter-spacing:-0.02em;
-  }
-  header p{
-    margin:0;
-    color:var(--sub);
-    font-size:13px;
-  }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Made — Checklist & Weekly Tracker</title>
+  <meta name="theme-color" content="#e8a256">
+  <link rel="manifest" href="manifest.json">
+  <link rel="apple-touch-icon" href="icon-192.png">
+  <link rel="icon" type="image/png" href="icon-192.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
+    rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0b0b0d;
+      --card: #141418;
+      --line: #222329;
+      --text: #f3f3f5;
+      --sub: #8c8d96;
+      --accent: #e8a256;
+      --accent2: #6fa8dc;
+      --accent2-border: rgba(111, 168, 220, 0.24);
+      --accent-border: rgba(232, 162, 86, 0.22);
+      --done: #4d7358;
+      --done-light: #63a375;
+      --radius-lg: 16px;
+      --radius-md: 12px;
+    }
 
-  /* Section cards for visual separation */
-  .section-card{
-    border-radius:var(--radius-lg);
-    padding:20px 18px 20px;
-    margin-bottom:28px;
-    position:relative;
-  }
-  .section-daily{
-    background:linear-gradient(180deg, rgba(20, 25, 36, 0.85) 0%, rgba(14, 17, 25, 0.95) 100%);
-    border:1px solid var(--accent2-border);
-    box-shadow:0 10px 32px -6px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(111, 168, 220, 0.08);
-  }
-  .section-monthly{
-    background:linear-gradient(180deg, rgba(22, 21, 24, 0.65) 0%, rgba(16, 16, 19, 0.85) 100%);
-    border:1px solid var(--accent-border);
-    box-shadow:0 10px 32px -6px rgba(0, 0, 0, 0.35), 0 0 0 1px rgba(232, 162, 86, 0.05);
-  }
+    * {
+      box-sizing: border-box;
+    }
 
-  /* Section Header */
-  .section-header{
-    margin-bottom:14px;
-  }
-  .section-tag-row{
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    margin-bottom:6px;
-  }
-  .badge{
-    display:inline-flex;
-    align-items:center;
-    gap:6px;
-    font-size:11px;
-    letter-spacing:.1em;
-    text-transform:uppercase;
-    font-weight:700;
-    padding:4px 10px;
-    border-radius:20px;
-  }
-  .badge-daily{
-    background:rgba(111, 168, 220, 0.12);
-    color:var(--accent2);
-    border:1px solid rgba(111, 168, 220, 0.28);
-  }
-  .badge-monthly{
-    background:rgba(232, 162, 86, 0.12);
-    color:var(--accent);
-    border:1px solid rgba(232, 162, 86, 0.28);
-  }
-  .badge-dot{
-    width:6px;
-    height:6px;
-    border-radius:50%;
-    background:currentColor;
-    box-shadow:0 0 6px currentColor;
-  }
-  .section-date{
-    font-size:12.5px;
-    color:var(--sub);
-    font-weight:500;
-  }
-  .section-title{
-    margin:0;
-    font-size:20px;
-    font-weight:700;
-    letter-spacing:-0.01em;
-  }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Plus Jakarta Sans', 'Segoe UI', system-ui, -apple-system, sans-serif;
+      padding: 24px 16px 64px;
+      -webkit-font-smoothing: antialiased;
+    }
 
-  /* Progress bar */
-  .progress-wrap{
-    margin:14px 0 20px;
-  }
-  .progress-bar{
-    height:6px;
-    border-radius:3px;
-    background:var(--line);
-    overflow:hidden;
-  }
-  .progress-fill{
-    height:100%;
-    width:0%;
-    border-radius:3px;
-    transition:width .3s ease;
-  }
-  .fill-daily{
-    background:linear-gradient(90deg, #4ea8de, #6fa8dc);
-  }
-  .fill-monthly{
-    background:linear-gradient(90deg, #d9822b, #e8a256);
-  }
-  .progress-label{
-    margin-top:7px;
-    font-size:12px;
-    color:var(--sub);
-    font-weight:500;
-  }
+    .app-container {
+      max-width: 640px;
+      margin: 0 auto;
+    }
 
-  /* Week / task containers */
-  .week{
-    margin-bottom:14px;
-    border:1px solid var(--line);
-    border-radius:var(--radius-md);
-    overflow:hidden;
-    background:var(--card);
-    transition:border-color .2s ease;
-  }
-  .week:last-child{
-    margin-bottom:0;
-  }
-  .week:hover{
-    border-color:rgba(255,255,255,0.12);
-  }
-  .section-daily .week{
-    border-color:rgba(111, 168, 220, 0.16);
-    background:rgba(14, 18, 26, 0.9);
-  }
-  .week-header{
-    padding:13px 16px;
-    display:flex;
-    justify-content:space-between;
-    align-items:baseline;
-    border-bottom:1px solid var(--line);
-    background:rgba(255, 255, 255, 0.015);
-  }
-  .week-header .wk{
-    font-size:11px;
-    color:var(--sub);
-    letter-spacing:.08em;
-    text-transform:uppercase;
-    display:block;
-    font-weight:600;
-  }
-  .week-header .biz{
-    font-size:17px;
-    font-weight:700;
-    margin-top:2px;
-  }
-  .week-count{
-    font-size:12px;
-    color:var(--sub);
-    font-weight:600;
-    background:rgba(255, 255, 255, 0.05);
-    padding:2px 8px;
-    border-radius:10px;
-  }
+    header {
+      margin-bottom: 24px;
+      padding: 0 4px;
+    }
 
-  /* Task items */
-  ul{
-    list-style:none;
-    margin:0;
-    padding:0;
-  }
-  li{
-    border-top:1px solid var(--line);
-    transition:background .15s ease;
-  }
-  .section-daily li{
-    border-top-color:rgba(111, 168, 220, 0.12);
-  }
-  li:first-child{ border-top:none; }
-  li:hover{
-    background:rgba(255,255,255,0.02);
-  }
-  label{
-    display:flex;
-    align-items:center;
-    gap:13px;
-    padding:13px 16px;
-    cursor:pointer;
-    -webkit-tap-highlight-color:transparent;
-    user-select:none;
-  }
-  .box{
-    width:20px;
-    height:20px;
-    min-width:20px;
-    border-radius:6px;
-    border:1.5px solid var(--sub);
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    transition:all .18s cubic-bezier(0.16, 1, 0.3, 1);
-    background:rgba(255,255,255,0.02);
-  }
-  .box svg{
-    width:12px;
-    height:12px;
-    opacity:0;
-    transform:scale(0.6);
-    transition:opacity .15s ease, transform .18s cubic-bezier(0.34, 1.56, 0.64, 1);
-  }
-  input{ display:none; }
-  input:checked + .box{
-    background:var(--done);
-    border-color:var(--done);
-  }
-  input:checked + .box.box-daily{
-    background:var(--accent2);
-    border-color:var(--accent2);
-  }
-  input:checked + .box svg{
-    opacity:1;
-    transform:scale(1);
-  }
-  .task{
-    font-size:14.5px;
-    font-weight:450;
-    transition:color .18s ease, opacity .18s ease;
-  }
-  input:checked ~ .task{
-    color:var(--sub);
-    text-decoration:line-through;
-    opacity:.65;
-  }
+    header .eyebrow {
+      color: var(--accent);
+      font-size: 12px;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+      font-weight: 700;
+    }
 
-  /* Section Actions / Reset */
-  .section-actions{
-    display:flex;
-    justify-content:center;
-    margin-top:18px;
-  }
-  .reset{
-    display:inline-flex;
-    align-items:center;
-    justify-content:center;
-    gap:8px;
-    background:rgba(255,255,255,0.03);
-    color:var(--sub);
-    border:1px solid var(--line);
-    padding:9px 18px;
-    border-radius:8px;
-    font-size:12.5px;
-    font-weight:500;
-    cursor:pointer;
-    font-family:inherit;
-    transition:all .2s ease;
-  }
-  .reset:hover{
-    color:var(--text);
-    background:rgba(255,255,255,0.06);
-    border-color:rgba(255,255,255,0.18);
-  }
-  .reset:active{
-    transform:scale(0.97);
-  }
-  .reset-icon{
-    width:13px;
-    height:13px;
-    stroke:currentColor;
-    opacity:.8;
-    transition:transform .3s ease;
-  }
-  .reset:hover .reset-icon{
-    transform:rotate(-45deg);
-  }
+    header h1 {
+      margin: 4px 0 6px;
+      font-size: 28px;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+    }
 
-  /* Section Divider */
-  .section-divider{
-    display:flex;
-    align-items:center;
-    gap:14px;
-    margin:32px 0 28px;
-    padding:0 8px;
-  }
-  .divider-line{
-    flex:1;
-    height:1px;
-    background:linear-gradient(90deg, transparent, var(--line), transparent);
-  }
-  .divider-text{
-    font-size:11px;
-    letter-spacing:.14em;
-    text-transform:uppercase;
-    color:#585963;
-    font-weight:700;
-  }
+    header p {
+      margin: 0;
+      color: var(--sub);
+      font-size: 13px;
+    }
 
-  .loading{
-    text-align:center;
-    color:var(--sub);
-    padding:36px 0;
-    font-size:13px;
-  }
-</style>
+    /* Section cards */
+    .section-card {
+      border-radius: var(--radius-lg);
+      padding: 20px 18px 20px;
+      margin-bottom: 28px;
+      position: relative;
+    }
+
+    .section-daily {
+      background: linear-gradient(180deg, rgba(20, 25, 36, 0.85) 0%, rgba(14, 17, 25, 0.95) 100%);
+      border: 1px solid var(--accent2-border);
+      box-shadow: 0 10px 32px -6px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(111, 168, 220, 0.08);
+    }
+
+    .section-monthly {
+      background: linear-gradient(180deg, rgba(22, 21, 24, 0.65) 0%, rgba(16, 16, 19, 0.85) 100%);
+      border: 1px solid var(--accent-border);
+      box-shadow: 0 10px 32px -6px rgba(0, 0, 0, 0.35), 0 0 0 1px rgba(232, 162, 86, 0.05);
+    }
+
+    /* Section Header */
+    .section-header {
+      margin-bottom: 14px;
+    }
+
+    .section-tag-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 6px;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 11px;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      font-weight: 700;
+      padding: 4px 10px;
+      border-radius: 20px;
+    }
+
+    .badge-daily {
+      background: rgba(111, 168, 220, 0.12);
+      color: var(--accent2);
+      border: 1px solid rgba(111, 168, 220, 0.28);
+    }
+
+    .badge-monthly {
+      background: rgba(232, 162, 86, 0.12);
+      color: var(--accent);
+      border: 1px solid rgba(232, 162, 86, 0.28);
+    }
+
+    .badge-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: currentColor;
+      box-shadow: 0 0 6px currentColor;
+    }
+
+    .section-date {
+      font-size: 12.5px;
+      color: var(--sub);
+      font-weight: 500;
+    }
+
+    .section-title {
+      margin: 0;
+      font-size: 20px;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+    }
+
+    /* Nav row for previous/next week and month */
+    .period-nav-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
+      margin: 12px 0 16px;
+      padding: 6px 8px;
+      background: rgba(0, 0, 0, 0.28);
+      border: 1px solid var(--line);
+      border-radius: 10px;
+    }
+
+    .period-nav-center {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .period-label {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text);
+      letter-spacing: 0.01em;
+    }
+
+    .nav-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 28px;
+      height: 28px;
+      border-radius: 6px;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid var(--line);
+      color: var(--sub);
+      cursor: pointer;
+      padding: 0;
+      transition: all .15s ease;
+    }
+
+    .nav-btn:hover {
+      background: rgba(255, 255, 255, 0.1);
+      color: var(--text);
+      border-color: rgba(255, 255, 255, 0.2);
+    }
+
+    .nav-btn svg {
+      width: 14px;
+      height: 14px;
+    }
+
+    .jump-today-btn {
+      font-size: 10.5px;
+      font-weight: 700;
+      letter-spacing: .04em;
+      text-transform: uppercase;
+      padding: 3px 8px;
+      border-radius: 12px;
+      background: rgba(111, 168, 220, 0.16);
+      color: var(--accent2);
+      border: 1px solid rgba(111, 168, 220, 0.35);
+      cursor: pointer;
+      transition: all .15s ease;
+    }
+
+    .jump-today-btn:hover {
+      background: rgba(111, 168, 220, 0.28);
+    }
+
+    .jump-today-btn-monthly {
+      background: rgba(232, 162, 86, 0.16);
+      color: var(--accent);
+      border: 1px solid rgba(232, 162, 86, 0.35);
+    }
+
+    .jump-today-btn-monthly:hover {
+      background: rgba(232, 162, 86, 0.28);
+    }
+
+    /* Weekly Day Selector Strip */
+    .week-strip {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 6px;
+      margin-bottom: 16px;
+    }
+
+    .day-pill {
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      padding: 8px 3px 6px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+      cursor: pointer;
+      transition: all .18s ease;
+      font-family: inherit;
+      color: var(--text);
+      position: relative;
+      user-select: none;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .day-pill:hover {
+      background: rgba(255, 255, 255, 0.05);
+      border-color: rgba(255, 255, 255, 0.15);
+    }
+
+    .day-pill.is-today {
+      border-color: rgba(111, 168, 220, 0.45);
+    }
+
+    .day-pill.is-today::after {
+      content: '';
+      position: absolute;
+      top: 3px;
+      width: 4px;
+      height: 4px;
+      border-radius: 50%;
+      background: var(--accent2);
+      box-shadow: 0 0 5px var(--accent2);
+    }
+
+    .day-pill.is-selected {
+      background: rgba(111, 168, 220, 0.15);
+      border-color: var(--accent2);
+      box-shadow: 0 0 12px rgba(111, 168, 220, 0.22);
+    }
+
+    .day-name {
+      font-size: 10px;
+      font-weight: 700;
+      color: var(--sub);
+      text-transform: uppercase;
+      letter-spacing: .04em;
+    }
+
+    .day-pill.is-selected .day-name {
+      color: var(--accent2);
+    }
+
+    .day-num {
+      font-size: 13.5px;
+      font-weight: 700;
+      line-height: 1;
+    }
+
+    .day-badge {
+      font-size: 9.5px;
+      font-weight: 700;
+      padding: 1px 4px;
+      border-radius: 6px;
+      line-height: 1.2;
+    }
+
+    .day-badge-full {
+      background: rgba(77, 115, 88, 0.35);
+      color: #85e89d;
+      border: 1px solid rgba(77, 115, 88, 0.5);
+    }
+
+    .day-badge-partial {
+      background: rgba(111, 168, 220, 0.18);
+      color: var(--accent2);
+      border: 1px solid rgba(111, 168, 220, 0.3);
+    }
+
+    .day-badge-empty {
+      background: rgba(255, 255, 255, 0.03);
+      color: #585963;
+    }
+
+    /* View switch bar */
+    .view-control-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 14px;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .view-switcher {
+      display: inline-flex;
+      background: rgba(0, 0, 0, 0.4);
+      border: 1px solid var(--line);
+      border-radius: 9px;
+      padding: 3px;
+      gap: 2px;
+    }
+
+    .view-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 12px;
+      border-radius: 7px;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--sub);
+      background: transparent;
+      border: none;
+      cursor: pointer;
+      transition: all .15s ease;
+      font-family: inherit;
+    }
+
+    .view-btn:hover {
+      color: var(--text);
+    }
+
+    .view-btn.active {
+      background: rgba(255, 255, 255, 0.08);
+      color: var(--text);
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+    }
+
+    .view-btn svg {
+      width: 13px;
+      height: 13px;
+    }
+
+    /* Notice banner for past day */
+    .past-notice {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 7px 12px;
+      background: rgba(111, 168, 220, 0.08);
+      border: 1px solid rgba(111, 168, 220, 0.22);
+      border-radius: 8px;
+      margin-bottom: 12px;
+      font-size: 12px;
+      color: var(--accent2);
+    }
+
+    .past-notice span {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    /* Progress bar */
+    .progress-wrap {
+      margin: 10px 0 16px;
+    }
+
+    .progress-bar {
+      height: 6px;
+      border-radius: 3px;
+      background: var(--line);
+      overflow: hidden;
+    }
+
+    .progress-fill {
+      height: 100%;
+      width: 0%;
+      border-radius: 3px;
+      transition: width .3s ease;
+    }
+
+    .fill-daily {
+      background: linear-gradient(90deg, #4ea8de, #6fa8dc);
+    }
+
+    .fill-monthly {
+      background: linear-gradient(90deg, #d9822b, #e8a256);
+    }
+
+    .progress-label {
+      margin-top: 7px;
+      font-size: 12px;
+      color: var(--sub);
+      font-weight: 500;
+    }
+
+    /* Week / task containers */
+    .week {
+      margin-bottom: 14px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      background: var(--card);
+      transition: border-color .2s ease;
+    }
+
+    .week:last-child {
+      margin-bottom: 0;
+    }
+
+    .week:hover {
+      border-color: rgba(255, 255, 255, 0.12);
+    }
+
+    .section-daily .week {
+      border-color: rgba(111, 168, 220, 0.16);
+      background: rgba(14, 18, 26, 0.9);
+    }
+
+    .week-header {
+      padding: 13px 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      border-bottom: 1px solid var(--line);
+      background: rgba(255, 255, 255, 0.015);
+    }
+
+    .week-header .wk {
+      font-size: 11px;
+      color: var(--sub);
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      display: block;
+      font-weight: 600;
+    }
+
+    .week-header .biz {
+      font-size: 17px;
+      font-weight: 700;
+      margin-top: 2px;
+    }
+
+    .week-count {
+      font-size: 12px;
+      color: var(--sub);
+      font-weight: 600;
+      background: rgba(255, 255, 255, 0.05);
+      padding: 2px 8px;
+      border-radius: 10px;
+    }
+
+    /* Task items */
+    ul {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
+
+    li {
+      border-top: 1px solid var(--line);
+      transition: background .15s ease;
+    }
+
+    .section-daily li {
+      border-top-color: rgba(111, 168, 220, 0.12);
+    }
+
+    li:first-child {
+      border-top: none;
+    }
+
+    li:hover {
+      background: rgba(255, 255, 255, 0.02);
+    }
+
+    label {
+      display: flex;
+      align-items: center;
+      gap: 13px;
+      padding: 13px 16px;
+      cursor: pointer;
+      -webkit-tap-highlight-color: transparent;
+      user-select: none;
+    }
+
+    .box {
+      width: 20px;
+      height: 20px;
+      min-width: 20px;
+      border-radius: 6px;
+      border: 1.5px solid var(--sub);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all .18s cubic-bezier(0.16, 1, 0.3, 1);
+      background: rgba(255, 255, 255, 0.02);
+    }
+
+    .box svg {
+      width: 12px;
+      height: 12px;
+      opacity: 0;
+      transform: scale(0.6);
+      transition: opacity .15s ease, transform .18s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    input[type="checkbox"] {
+      display: none;
+    }
+
+    input:checked+.box {
+      background: var(--done);
+      border-color: var(--done);
+    }
+
+    input:checked+.box.box-daily {
+      background: var(--accent2);
+      border-color: var(--accent2);
+    }
+
+    input:checked+.box svg {
+      opacity: 1;
+      transform: scale(1);
+    }
+
+    .task {
+      font-size: 14.5px;
+      font-weight: 450;
+      transition: color .18s ease, opacity .18s ease;
+    }
+
+    input:checked~.task {
+      color: var(--sub);
+      text-decoration: line-through;
+      opacity: .65;
+    }
+
+    /* Weekly Habit Tracker Matrix View */
+    .tracker-matrix-card {
+      background: rgba(13, 17, 24, 0.85);
+      border: 1px solid rgba(111, 168, 220, 0.18);
+      border-radius: var(--radius-md);
+      padding: 14px 12px;
+      overflow: hidden;
+    }
+
+    .tracker-stats-strip {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px 16px;
+      padding: 8px 12px;
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      margin-bottom: 14px;
+      font-size: 12px;
+    }
+
+    .tracker-stat-item {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      color: var(--sub);
+    }
+
+    .tracker-stat-item strong {
+      color: var(--text);
+      font-weight: 700;
+    }
+
+    .tracker-table-wrap {
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      margin: 0 -4px;
+      padding: 0 4px;
+    }
+
+    .tracker-table {
+      width: 100%;
+      border-collapse: separate;
+      border-spacing: 0;
+      min-width: 440px;
+    }
+
+    .tracker-table th,
+    .tracker-table td {
+      padding: 9px 6px;
+      text-align: center;
+      border-bottom: 1px solid rgba(111, 168, 220, 0.1);
+    }
+
+    .tracker-table th:first-child,
+    .tracker-table td:first-child {
+      text-align: left;
+      padding-left: 10px;
+      font-weight: 600;
+      font-size: 13px;
+      color: var(--text);
+      position: sticky;
+      left: 0;
+      background: rgba(14, 18, 25, 0.95);
+      z-index: 2;
+      min-width: 130px;
+    }
+
+    .tracker-table th:last-child,
+    .tracker-table td:last-child {
+      padding-right: 10px;
+      font-size: 11.5px;
+      font-weight: 600;
+      color: var(--sub);
+      min-width: 50px;
+    }
+
+    .tracker-th-day {
+      font-size: 10.5px;
+      color: var(--sub);
+      font-weight: 600;
+      text-transform: uppercase;
+    }
+
+    .tracker-th-day.is-today {
+      color: var(--accent2);
+      font-weight: 800;
+    }
+
+    .tracker-th-num {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--text);
+    }
+
+    .tracker-th-day.is-today .tracker-th-num {
+      color: var(--accent2);
+    }
+
+    .tracker-cell-btn {
+      width: 26px;
+      height: 26px;
+      border-radius: 6px;
+      border: 1.5px solid var(--sub);
+      background: rgba(255, 255, 255, 0.02);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      padding: 0;
+      transition: all .15s ease;
+      color: transparent;
+    }
+
+    .tracker-cell-btn:hover {
+      border-color: var(--accent2);
+      background: rgba(111, 168, 220, 0.1);
+    }
+
+    .tracker-cell-btn.checked {
+      background: var(--accent2);
+      border-color: var(--accent2);
+      color: #0b0b0d;
+    }
+
+    .tracker-cell-btn svg {
+      width: 13px;
+      height: 13px;
+      stroke: currentColor;
+    }
+
+    .tracker-footer-total {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--sub);
+    }
+
+    /* Section Actions / Reset */
+    .section-actions {
+      display: flex;
+      justify-content: center;
+      margin-top: 18px;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .reset {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      background: rgba(255, 255, 255, 0.03);
+      color: var(--sub);
+      border: 1px solid var(--line);
+      padding: 9px 18px;
+      border-radius: 8px;
+      font-size: 12.5px;
+      font-weight: 500;
+      cursor: pointer;
+      font-family: inherit;
+      transition: all .2s ease;
+    }
+
+    .reset:hover {
+      color: var(--text);
+      background: rgba(255, 255, 255, 0.06);
+      border-color: rgba(255, 255, 255, 0.18);
+    }
+
+    .reset:active {
+      transform: scale(0.97);
+    }
+
+    .reset-icon {
+      width: 13px;
+      height: 13px;
+      stroke: currentColor;
+      opacity: .8;
+      transition: transform .3s ease;
+    }
+
+    .reset:hover .reset-icon {
+      transform: rotate(-45deg);
+    }
+
+    /* Section Divider */
+    .section-divider {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin: 32px 0 28px;
+      padding: 0 8px;
+    }
+
+    .divider-line {
+      flex: 1;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--line), transparent);
+    }
+
+    .divider-text {
+      font-size: 11px;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+      color: #585963;
+      font-weight: 700;
+    }
+
+    .loading {
+      text-align: center;
+      color: var(--sub);
+      padding: 36px 0;
+      font-size: 13px;
+    }
+  </style>
 </head>
+
 <body>
 
-<div class="app-container">
-  <header>
-    <span class="eyebrow">Made</span>
-    <h1>Checklist</h1>
-  </header>
+  <div class="app-container">
+    <header>
+      <span class="eyebrow">Hi Abhin,</span>
+      <h1>Checklist</h1>
+    </header>
 
-  <!-- DAILY SECTION (FIRST) -->
-  <section class="section-card section-daily" aria-labelledby="dailyHeading">
-    <div class="section-header">
-      <div class="section-tag-row">
-        <span class="badge badge-daily">
-          <span class="badge-dot"></span>
-          Daily Focus
-        </span>
-        <span class="section-date" id="dailyDateLabel">Loading…</span>
+    <!-- DAILY & WEEKLY GOALS SECTION -->
+    <section class="section-card section-daily" aria-labelledby="dailyHeading">
+      <div class="section-header">
+        <div class="section-tag-row">
+          <span class="badge badge-daily">
+            <span class="badge-dot"></span>
+            Weekly &amp; Daily Tracker
+          </span>
+          <span class="section-date" id="dailyDateLabel">Loading…</span>
+        </div>
+        <h2 id="dailyHeading" class="section-title">Weekly Goals</h2>
       </div>
-      <h2 id="dailyHeading" class="section-title">Weekday Goals</h2>
+
+      <!-- Week Navigation Bar -->
+      <div class="period-nav-row">
+        <button class="nav-btn" id="prevWeekBtn" aria-label="Previous week" title="Previous week">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"
+            stroke-linejoin="round">
+            <polyline points="15 18 9 12 15 6"></polyline>
+          </svg>
+        </button>
+        <div class="period-nav-center">
+          <span class="period-label" id="weekRangeLabel">Loading week…</span>
+          <button class="jump-today-btn" id="todayWeekBtn" style="display:none;" title="Jump back to current week">This
+            Week</button>
+        </div>
+        <button class="nav-btn" id="nextWeekBtn" aria-label="Next week" title="Next week">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"
+            stroke-linejoin="round">
+            <polyline points="9 18 15 12 9 6"></polyline>
+          </svg>
+        </button>
+      </div>
+
+      <!-- 7-Day Selector Strip -->
+      <div class="week-strip" id="weekStrip">
+        <!-- Generated via JS -->
+      </div>
+
+      <!-- View Switcher (Daily Checklist vs Weekly Tracker Grid) -->
+      <div class="view-control-row">
+        <div class="view-switcher" role="tablist">
+          <button class="view-btn active" id="tabChecklistView" role="tab" aria-selected="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"
+              stroke-linejoin="round">
+              <polyline points="9 11 12 14 22 4"></polyline>
+              <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path>
+            </svg>
+            <span>Daily Checklist</span>
+          </button>
+          <button class="view-btn" id="tabTrackerView" role="tab" aria-selected="false">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"
+              stroke-linejoin="round">
+              <rect x="3" y="3" width="7" height="7"></rect>
+              <rect x="14" y="3" width="7" height="7"></rect>
+              <rect x="14" y="14" width="7" height="7"></rect>
+              <rect x="3" y="14" width="7" height="7"></rect>
+            </svg>
+            <span>Weekly Tracker</span>
+          </button>
+        </div>
+        <div class="tracker-stat-item" id="quickStreakBadge">
+          <span id="quickStreakText">Streak: …</span>
+        </div>
+      </div>
+
+      <!-- VIEW A: Daily Checklist Container -->
+      <div id="checklistViewContainer">
+        <div id="pastDayNotice" class="past-notice" style="display:none;">
+          <span id="pastNoticeText">Viewing previous day</span>
+          <button class="jump-today-btn" id="jumpToTodayBtn">Back to Today</button>
+        </div>
+
+        <div class="progress-wrap">
+          <div class="progress-bar">
+            <div class="progress-fill fill-daily" id="dailyProgressFill"></div>
+          </div>
+          <div class="progress-label" id="dailyProgressLabel">Loading…</div>
+        </div>
+
+        <div id="dailyContent" class="loading">Loading your progress…</div>
+
+        <div class="section-actions">
+          <button class="reset" id="dailyResetBtn" title="Reset goals for the selected day">
+            <svg class="reset-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+              stroke-linecap="round" stroke-linejoin="round">
+              <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8" />
+              <path d="M3 3v5h5" />
+            </svg>
+            <span id="resetDayBtnText">Reset this day</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- VIEW B: Weekly Habit Tracker Matrix Container -->
+      <div id="trackerViewContainer" style="display:none;">
+        <div class="tracker-matrix-card">
+          <div class="tracker-stats-strip">
+            <div class="tracker-stat-item">Week Progress: <strong id="matrixWeekProgress">0%</strong></div>
+            <div class="tracker-stat-item">Done: <strong id="matrixDoneCount">0/28</strong></div>
+            <div class="tracker-stat-item">Current Streak: <strong id="matrixStreakCount">0 days 🔥</strong></div>
+          </div>
+          <div class="tracker-table-wrap">
+            <table class="tracker-table" id="trackerMatrixTable">
+              <!-- Rendered by JS -->
+            </table>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- VISUAL SEPARATOR -->
+    <div class="section-divider" role="separator" aria-hidden="true">
+      <span class="divider-line"></span>
+      <span class="divider-text">Monthly Ventures</span>
+      <span class="divider-line"></span>
     </div>
 
-    <div class="progress-wrap">
-      <div class="progress-bar"><div class="progress-fill fill-daily" id="dailyProgressFill"></div></div>
-      <div class="progress-label" id="dailyProgressLabel">Loading…</div>
-    </div>
+    <!-- MONTHLY SECTION -->
+    <section class="section-card section-monthly" aria-labelledby="monthlyHeading">
+      <div class="section-header">
+        <div class="section-tag-row">
+          <span class="badge badge-monthly">
+            <span class="badge-dot"></span>
+            Monthly Overview
+          </span>
+          <span class="section-date" id="monthLabel">Loading…</span>
+        </div>
+        <h2 id="monthlyHeading" class="section-title">Made Ventures</h2>
+      </div>
 
-    <div id="dailyContent" class="loading">Loading your progress…</div>
+      <!-- Month Navigation Bar -->
+      <div class="period-nav-row">
+        <button class="nav-btn" id="prevMonthBtn" aria-label="Previous month" title="Previous month">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"
+            stroke-linejoin="round">
+            <polyline points="15 18 9 12 15 6"></polyline>
+          </svg>
+        </button>
+        <div class="period-nav-center">
+          <span class="period-label" id="monthNavLabel">Loading month…</span>
+          <button class="jump-today-btn jump-today-btn-monthly" id="todayMonthBtn" style="display:none;"
+            title="Jump back to current month">This Month</button>
+        </div>
+        <button class="nav-btn" id="nextMonthBtn" aria-label="Next month" title="Next month">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"
+            stroke-linejoin="round">
+            <polyline points="9 18 15 12 9 6"></polyline>
+          </svg>
+        </button>
+      </div>
 
-    <div class="section-actions">
-      <button class="reset" id="dailyResetBtn" title="Reset today's daily goals">
-        <svg class="reset-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/>
-          <path d="M3 3v5h5"/>
-        </svg>
-        <span>Reset today</span>
-      </button>
-    </div>
-  </section>
+      <div class="progress-wrap">
+        <div class="progress-bar">
+          <div class="progress-fill fill-monthly" id="progressFill"></div>
+        </div>
+        <div class="progress-label" id="progressLabel">Loading…</div>
+      </div>
 
-  <!-- VISUAL SEPARATOR -->
-  <div class="section-divider" role="separator" aria-hidden="true">
-    <span class="divider-line"></span>
-    <span class="divider-text">Monthly Ventures</span>
-    <span class="divider-line"></span>
+      <div id="content" class="loading">Loading your progress…</div>
+
+      <div class="section-actions">
+        <button class="reset" id="resetBtn" title="Reset tasks for the selected month">
+          <svg class="reset-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+            stroke-linecap="round" stroke-linejoin="round">
+            <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8" />
+            <path d="M3 3v5h5" />
+          </svg>
+          <span id="resetMonthBtnText">Reset this month</span>
+        </button>
+      </div>
+    </section>
   </div>
 
-  <!-- MONTHLY SECTION (SECOND) -->
-  <section class="section-card section-monthly" aria-labelledby="monthlyHeading">
-    <div class="section-header">
-      <div class="section-tag-row">
-        <span class="badge badge-monthly">
-          <span class="badge-dot"></span>
-          Monthly Overview
-        </span>
-        <span class="section-date" id="monthLabel">Loading…</span>
-      </div>
-      <h2 id="monthlyHeading" class="section-title">Made Ventures</h2>
-    </div>
+  <script>
+    // ==================== VENTURES DATA & LOGIC ====================
+    const DATA = [
+      {
+        week: "Week 1", biz: "MadeWebs", tasks: [
+          "20 cold calls",
+          "Client work updates",
+          "Instagram/content posting",
+          "Monthly lead review"
+        ]
+      },
+      {
+        week: "Week 2", biz: "MadeStore", tasks: [
+          "Monthly product/content work",
+          "Instagram checking",
+          "Brand activity review",
+          "Monthly store review"
+        ]
+      },
+      {
+        week: "Week 3", biz: "MadeProducts", tasks: [
+          "Monthly product shoot",
+          "Monthly scheduling",
+          "Monthly reel/video",
+          "Instagram checking"
+        ]
+      },
+      {
+        week: "Week 4", biz: "MadeFit", tasks: [
+          "Monthly product shoot",
+          "Product photos",
+          "Monthly review",
+          "Instagram/content checking"
+        ]
+      }
+    ];
 
-    <div class="progress-wrap">
-      <div class="progress-bar"><div class="progress-fill fill-monthly" id="progressFill"></div></div>
-      <div class="progress-label" id="progressLabel">Loading…</div>
-    </div>
+    let monthOffset = 0;
+    let monthlyState = {};
 
-    <div id="content" class="loading">Loading your progress…</div>
-
-    <div class="section-actions">
-      <button class="reset" id="resetBtn" title="Reset this month's tasks">
-        <svg class="reset-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/>
-          <path d="M3 3v5h5"/>
-        </svg>
-        <span>Reset this month</span>
-      </button>
-    </div>
-  </section>
-</div>
-
-<script>
-const DATA = [
-  { week: "Week 1", biz: "MadeWebs", tasks: [
-    "20 cold calls",
-    "Client work updates",
-    "Instagram/content posting",
-    "Monthly lead review"
-  ]},
-  { week: "Week 2", biz: "MadeStore", tasks: [
-    "Monthly product/content work",
-    "Instagram checking",
-    "Brand activity review",
-    "Monthly store review"
-  ]},
-  { week: "Week 3", biz: "MadeProducts", tasks: [
-    "Monthly product shoot",
-    "Monthly scheduling",
-    "Monthly reel/video",
-    "Instagram checking"
-  ]},
-  { week: "Week 4", biz: "MadeFit", tasks: [
-    "Monthly product shoot",
-    "Product photos",
-    "Monthly review",
-    "Instagram/content checking"
-  ]}
-];
-
-function currentMonthKey(){
-  const d = new Date();
-  return `made-checklist-state_${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}`;
-}
-const STORAGE_KEY = currentMonthKey();
-let state = {};
-
-function taskId(wi, ti){ return `w${wi}_t${ti}`; }
-
-function totalTasks(){
-  return DATA.reduce((sum, w) => sum + w.tasks.length, 0);
-}
-
-function checkedCount(){
-  return Object.values(state).filter(Boolean).length;
-}
-
-function updateProgress(){
-  const total = totalTasks();
-  const done = checkedCount();
-  const pct = total ? Math.round((done/total)*100) : 0;
-  document.getElementById('progressFill').style.width = pct + '%';
-  document.getElementById('progressLabel').textContent = `${done} of ${total} tasks done · ${pct}%`;
-}
-
-async function saveState(){
-  try{
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
-  }catch(e){
-    console.error('Save failed', e);
-  }
-}
-
-async function loadState(){
-  try{
-    const result = localStorage.getItem(STORAGE_KEY);
-    if(result){
-      state = JSON.parse(result);
+    function getActiveMonthDate() {
+      const d = new Date();
+      d.setDate(1);
+      d.setMonth(d.getMonth() + monthOffset);
+      return d;
     }
-  }catch(e){
-    state = {};
-  }
-}
 
-function render(){
-  const content = document.getElementById('content');
-  content.classList.remove('loading');
-  content.innerHTML = '';
+    function getMonthlyStorageKey(d) {
+      return `made-checklist-state_${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}`;
+    }
 
-  DATA.forEach((w, wi) => {
-    const doneCount = w.tasks.filter((_, ti) => state[taskId(wi, ti)]).length;
+    function taskId(wi, ti) { return `w${wi}_t${ti}`; }
 
-    const weekDiv = document.createElement('div');
-    weekDiv.className = 'week';
+    function totalTasks() {
+      return DATA.reduce((sum, w) => sum + w.tasks.length, 0);
+    }
 
-    const headerDiv = document.createElement('div');
-    headerDiv.className = 'week-header';
-    headerDiv.innerHTML = `
+    function checkedCount() {
+      return Object.values(monthlyState).filter(Boolean).length;
+    }
+
+    function updateProgress() {
+      const total = totalTasks();
+      const done = checkedCount();
+      const pct = total ? Math.round((done / total) * 100) : 0;
+      document.getElementById('progressFill').style.width = pct + '%';
+      document.getElementById('progressLabel').textContent = `${done} of ${total} tasks done · ${pct}%`;
+    }
+
+    function saveState() {
+      try {
+        const key = getMonthlyStorageKey(getActiveMonthDate());
+        localStorage.setItem(key, JSON.stringify(monthlyState));
+      } catch (e) {
+        console.error('Save failed', e);
+      }
+    }
+
+    function loadState() {
+      try {
+        const key = getMonthlyStorageKey(getActiveMonthDate());
+        const result = localStorage.getItem(key);
+        if (result) {
+          monthlyState = JSON.parse(result);
+        } else {
+          monthlyState = {};
+        }
+      } catch (e) {
+        monthlyState = {};
+      }
+    }
+
+    function renderMonthly() {
+      const activeDate = getActiveMonthDate();
+      const monthName = activeDate.toLocaleString('default', { month: 'long', year: 'numeric' });
+      document.getElementById('monthLabel').textContent = monthName;
+      document.getElementById('monthNavLabel').textContent = monthName;
+
+      const todayMonthBtn = document.getElementById('todayMonthBtn');
+      if (monthOffset !== 0) {
+        todayMonthBtn.style.display = 'inline-block';
+        document.getElementById('resetMonthBtnText').textContent = `Reset ${activeDate.toLocaleString('default', { month: 'short' })}`;
+      } else {
+        todayMonthBtn.style.display = 'none';
+        document.getElementById('resetMonthBtnText').textContent = 'Reset this month';
+      }
+
+      const content = document.getElementById('content');
+      content.classList.remove('loading');
+      content.innerHTML = '';
+
+      DATA.forEach((w, wi) => {
+        const doneCount = w.tasks.filter((_, ti) => monthlyState[taskId(wi, ti)]).length;
+
+        const weekDiv = document.createElement('div');
+        weekDiv.className = 'week';
+
+        const headerDiv = document.createElement('div');
+        headerDiv.className = 'week-header';
+        headerDiv.innerHTML = `
       <div>
         <span class="wk">${w.week}</span>
         <span class="biz">${w.biz}</span>
       </div>
       <span class="week-count" id="count_${wi}">${doneCount}/${w.tasks.length}</span>
     `;
-    weekDiv.appendChild(headerDiv);
+        weekDiv.appendChild(headerDiv);
 
-    const ul = document.createElement('ul');
-    w.tasks.forEach((task, ti) => {
-      const id = taskId(wi, ti);
-      const li = document.createElement('li');
-      const checked = !!state[id];
-      li.innerHTML = `
+        const ul = document.createElement('ul');
+        w.tasks.forEach((task, ti) => {
+          const id = taskId(wi, ti);
+          const li = document.createElement('li');
+          const checked = !!monthlyState[id];
+          li.innerHTML = `
         <label>
           <input type="checkbox" id="${id}" ${checked ? 'checked' : ''}>
           <span class="box">
@@ -535,83 +1119,247 @@ function render(){
           <span class="task">${task}</span>
         </label>
       `;
-      ul.appendChild(li);
-      li.querySelector('input').addEventListener('change', (e) => {
-        state[id] = e.target.checked;
-        document.getElementById(`count_${wi}`).textContent =
-          `${w.tasks.filter((_, t2) => state[taskId(wi, t2)]).length}/${w.tasks.length}`;
-        updateProgress();
-        saveState();
+          ul.appendChild(li);
+          li.querySelector('input').addEventListener('change', (e) => {
+            monthlyState[id] = e.target.checked;
+            document.getElementById(`count_${wi}`).textContent =
+              `${w.tasks.filter((_, t2) => monthlyState[taskId(wi, t2)]).length}/${w.tasks.length}`;
+            updateProgress();
+            saveState();
+          });
+        });
+        weekDiv.appendChild(ul);
+        content.appendChild(weekDiv);
       });
-    });
-    weekDiv.appendChild(ul);
-    content.appendChild(weekDiv);
-  });
 
-  updateProgress();
-}
-
-document.getElementById('resetBtn').addEventListener('click', async () => {
-  state = {};
-  await saveState();
-  render();
-});
-
-// ---------- Daily goals ----------
-const DAILY_TASKS = ["Gym", "College", "Skill", "Placement Prep"];
-let dailyState = {};
-
-function currentDayKey(){
-  const d = new Date();
-  return `made-daily-state_${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
-}
-const DAILY_STORAGE_KEY = currentDayKey();
-
-function dailyDoneCount(){
-  return DAILY_TASKS.filter((_, i) => dailyState[`d${i}`]).length;
-}
-
-function updateDailyProgress(){
-  const total = DAILY_TASKS.length;
-  const done = dailyDoneCount();
-  const pct = total ? Math.round((done/total)*100) : 0;
-  document.getElementById('dailyProgressFill').style.width = pct + '%';
-  document.getElementById('dailyProgressLabel').textContent = `${done} of ${total} goals done · ${pct}%`;
-}
-
-async function saveDailyState(){
-  try{
-    localStorage.setItem(DAILY_STORAGE_KEY, JSON.stringify(dailyState));
-  }catch(e){
-    console.error('Save failed', e);
-  }
-}
-
-async function loadDailyState(){
-  try{
-    const result = localStorage.getItem(DAILY_STORAGE_KEY);
-    if(result){
-      dailyState = JSON.parse(result);
+      updateProgress();
     }
-  }catch(e){
-    dailyState = {};
-  }
-}
 
-function renderDaily(){
-  const content = document.getElementById('dailyContent');
-  content.classList.remove('loading');
-  content.innerHTML = '';
+    document.getElementById('resetBtn').addEventListener('click', () => {
+      monthlyState = {};
+      saveState();
+      renderMonthly();
+    });
 
-  const weekDiv = document.createElement('div');
-  weekDiv.className = 'week';
-  const ul = document.createElement('ul');
+    document.getElementById('prevMonthBtn').addEventListener('click', () => {
+      monthOffset--;
+      loadState();
+      renderMonthly();
+    });
 
-  DAILY_TASKS.forEach((task, i) => {
-    const id = `d${i}`;
-    const li = document.createElement('li');
-    const checked = !!dailyState[id];
-    li.innerHTML = `
+    document.getElementById('nextMonthBtn').addEventListener('click', () => {
+      monthOffset++;
+      loadState();
+      renderMonthly();
+    });
+
+    document.getElementById('todayMonthBtn').addEventListener('click', () => {
+      monthOffset = 0;
+      loadState();
+      renderMonthly();
+    });
+
+
+    // ==================== WEEKLY & DAILY TRACKER LOGIC ====================
+    const DAILY_TASKS = ["Gym", "College", "Skill", "Placement Prep"];
+    const DAY_NAMES = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
+
+    let weekOffset = 0; // 0 = current week, -1 = previous week, etc.
+    let selectedDateKey = ''; // YYYY-MM-DD
+    let activeView = 'checklist'; // 'checklist' | 'tracker'
+
+    function formatDateKey(d) {
+      const y = d.getFullYear();
+      const m = String(d.getMonth() + 1).padStart(2, '0');
+      const day = String(d.getDate()).padStart(2, '0');
+      return `${y}-${m}-${day}`;
+    }
+
+    function getTodayKey() {
+      return formatDateKey(new Date());
+    }
+
+    function parseDateKey(key) {
+      const [y, m, d] = key.split('-').map(Number);
+      return new Date(y, m - 1, d);
+    }
+
+    function getMondayOfWeek(baseDate, offsetWeeks = 0) {
+      const d = new Date(baseDate.getFullYear(), baseDate.getMonth(), baseDate.getDate());
+      const day = d.getDay();
+      const diffToMon = (day + 6) % 7;
+      d.setDate(d.getDate() - diffToMon + (offsetWeeks * 7));
+      return d;
+    }
+
+    function getDatesForWeek(offsetWeeks = 0) {
+      const mon = getMondayOfWeek(new Date(), offsetWeeks);
+      const dates = [];
+      for (let i = 0; i < 7; i++) {
+        const d = new Date(mon.getFullYear(), mon.getMonth(), mon.getDate() + i);
+        dates.push(d);
+      }
+      return dates;
+    }
+
+    function getDailyStorageKey(dateKey) {
+      return `made-daily-state_${dateKey}`;
+    }
+
+    function loadDailyStateForDate(dateKey) {
+      try {
+        const raw = localStorage.getItem(getDailyStorageKey(dateKey));
+        return raw ? JSON.parse(raw) : {};
+      } catch (e) {
+        return {};
+      }
+    }
+
+    function saveDailyStateForDate(dateKey, stateObj) {
+      try {
+        localStorage.setItem(getDailyStorageKey(dateKey), JSON.stringify(stateObj));
+      } catch (e) {
+        console.error('Failed saving daily state', e);
+      }
+    }
+
+    function getDayDoneCount(dateKey) {
+      const st = loadDailyStateForDate(dateKey);
+      return DAILY_TASKS.filter((_, i) => st[`d${i}`]).length;
+    }
+
+    // Calculate streak counting backwards from today
+    function calculateStreak() {
+      const today = new Date();
+      let streak = 0;
+      let checkDate = new Date(today.getFullYear(), today.getMonth(), today.getDate());
+
+      // Check today first
+      const todayKey = formatDateKey(checkDate);
+      const todayDone = getDayDoneCount(todayKey);
+      if (todayDone > 0) {
+        streak++;
+      }
+
+      // Check previous consecutive days
+      while (true) {
+        checkDate.setDate(checkDate.getDate() - 1);
+        const key = formatDateKey(checkDate);
+        const done = getDayDoneCount(key);
+        if (done > 0) {
+          streak++;
+        } else {
+          break;
+        }
+        if (streak > 365) break; // safety
+      }
+      return streak;
+    }
+
+    function updateStreakDisplay() {
+      const streak = calculateStreak();
+      const text = streak > 0 ? `${streak} day${streak > 1 ? 's' : ''} streak 🔥` : 'Start your streak today!';
+      document.getElementById('quickStreakText').textContent = text;
+      document.getElementById('matrixStreakCount').textContent = `${streak} day${streak > 1 ? 's' : ''} 🔥`;
+    }
+
+    function renderWeekStrip() {
+      const weekDates = getDatesForWeek(weekOffset);
+      const strip = document.getElementById('weekStrip');
+      strip.innerHTML = '';
+
+      const todayKey = getTodayKey();
+
+      // Update week range label in nav
+      const firstDay = weekDates[0];
+      const lastDay = weekDates[6];
+      const rangeStr = `${firstDay.toLocaleDateString('default', { month: 'short', day: 'numeric' })} – ${lastDay.toLocaleDateString('default', { month: 'short', day: 'numeric', year: 'numeric' })}`;
+      document.getElementById('weekRangeLabel').textContent = rangeStr;
+
+      const todayWeekBtn = document.getElementById('todayWeekBtn');
+      todayWeekBtn.style.display = weekOffset !== 0 ? 'inline-block' : 'none';
+
+      weekDates.forEach((d, idx) => {
+        const key = formatDateKey(d);
+        const doneCount = getDayDoneCount(key);
+        const isToday = key === todayKey;
+        const isSelected = key === selectedDateKey;
+
+        const btn = document.createElement('button');
+        btn.className = `day-pill ${isToday ? 'is-today' : ''} ${isSelected ? 'is-selected' : ''}`;
+        btn.setAttribute('type', 'button');
+        btn.setAttribute('aria-label', `${DAY_NAMES[idx]} ${d.getDate()}`);
+
+        let badgeClass = 'day-badge-empty';
+        if (doneCount === DAILY_TASKS.length) {
+          badgeClass = 'day-badge-full';
+        } else if (doneCount > 0) {
+          badgeClass = 'day-badge-partial';
+        }
+
+        btn.innerHTML = `
+      <span class="day-name">${DAY_NAMES[idx]}</span>
+      <span class="day-num">${d.getDate()}</span>
+      <span class="day-badge ${badgeClass}">${doneCount}/${DAILY_TASKS.length}</span>
+    `;
+
+        btn.addEventListener('click', () => {
+          selectedDateKey = key;
+          renderWeekStrip();
+          renderChecklistView();
+          renderTrackerMatrix();
+        });
+
+        strip.appendChild(btn);
+      });
+    }
+
+    function renderChecklistView() {
+      const content = document.getElementById('dailyContent');
+      content.classList.remove('loading');
+      content.innerHTML = '';
+
+      const todayKey = getTodayKey();
+      const selectedDate = parseDateKey(selectedDateKey);
+      const isToday = selectedDateKey === todayKey;
+
+      // Header date label
+      const dateFormatted = selectedDate.toLocaleString('default', { weekday: 'long', month: 'long', day: 'numeric' });
+      document.getElementById('dailyDateLabel').textContent = isToday ? `Today · ${dateFormatted}` : dateFormatted;
+
+      // Past day banner
+      const pastNotice = document.getElementById('pastDayNotice');
+      const pastNoticeText = document.getElementById('pastNoticeText');
+      if (!isToday) {
+        pastNotice.style.display = 'flex';
+        pastNoticeText.innerHTML = `
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+      Viewing <strong>${selectedDate.toLocaleDateString('default', { weekday: 'short', month: 'short', day: 'numeric' })}</strong> record
+    `;
+        document.getElementById('resetDayBtnText').textContent = `Reset ${selectedDate.toLocaleDateString('default', { weekday: 'short', day: 'numeric' })}`;
+      } else {
+        pastNotice.style.display = 'none';
+        document.getElementById('resetDayBtnText').textContent = 'Reset today';
+      }
+
+      // Load day state
+      const dayState = loadDailyStateForDate(selectedDateKey);
+      const doneCount = DAILY_TASKS.filter((_, i) => dayState[`d${i}`]).length;
+      const total = DAILY_TASKS.length;
+      const pct = Math.round((doneCount / total) * 100);
+
+      document.getElementById('dailyProgressFill').style.width = pct + '%';
+      document.getElementById('dailyProgressLabel').textContent = `${doneCount} of ${total} goals done · ${pct}%`;
+
+      const weekDiv = document.createElement('div');
+      weekDiv.className = 'week';
+      const ul = document.createElement('ul');
+
+      DAILY_TASKS.forEach((task, i) => {
+        const id = `d${i}`;
+        const li = document.createElement('li');
+        const checked = !!dayState[id];
+        li.innerHTML = `
       <label>
         <input type="checkbox" id="${id}" ${checked ? 'checked' : ''}>
         <span class="box box-daily">
@@ -622,48 +1370,204 @@ function renderDaily(){
         <span class="task">${task}</span>
       </label>
     `;
-    ul.appendChild(li);
-    li.querySelector('input').addEventListener('change', (e) => {
-      dailyState[id] = e.target.checked;
-      updateDailyProgress();
-      saveDailyState();
+        ul.appendChild(li);
+        li.querySelector('input').addEventListener('change', (e) => {
+          dayState[id] = e.target.checked;
+          saveDailyStateForDate(selectedDateKey, dayState);
+          renderChecklistView();
+          renderWeekStrip();
+          renderTrackerMatrix();
+          updateStreakDisplay();
+        });
+      });
+
+      weekDiv.appendChild(ul);
+      content.appendChild(weekDiv);
+    }
+
+    function renderTrackerMatrix() {
+      const weekDates = getDatesForWeek(weekOffset);
+      const table = document.getElementById('trackerMatrixTable');
+      const todayKey = getTodayKey();
+
+      // Load state for all 7 days of the week
+      const weekStates = weekDates.map(d => {
+        const key = formatDateKey(d);
+        return {
+          key,
+          date: d,
+          state: loadDailyStateForDate(key),
+          isToday: key === todayKey
+        };
+      });
+
+      // Calculate totals
+      let totalPossible = DAILY_TASKS.length * 7;
+      let totalDoneInWeek = 0;
+      const dayDoneTotals = weekStates.map(ws => {
+        const count = DAILY_TASKS.filter((_, ti) => ws.state[`d${ti}`]).length;
+        totalDoneInWeek += count;
+        return count;
+      });
+
+      const weekPct = Math.round((totalDoneInWeek / totalPossible) * 100);
+      document.getElementById('matrixWeekProgress').textContent = `${weekPct}%`;
+      document.getElementById('matrixDoneCount').textContent = `${totalDoneInWeek}/${totalPossible}`;
+
+      let html = '<thead><tr><th>Goal / Routine</th>';
+      weekStates.forEach((ws, i) => {
+        html += `
+      <th class="tracker-th-day ${ws.isToday ? 'is-today' : ''}">
+        <div>${DAY_NAMES[i]}</div>
+        <div class="tracker-th-num">${ws.date.getDate()}</div>
+      </th>
+    `;
+      });
+      html += '<th>Rate</th></tr></thead><tbody>';
+
+      // Task rows
+      DAILY_TASKS.forEach((task, ti) => {
+        let taskDoneDays = 0;
+        html += `<tr><td>${task}</td>`;
+        weekStates.forEach((ws) => {
+          const isChecked = !!ws.state[`d${ti}`];
+          if (isChecked) taskDoneDays++;
+          html += `
+        <td>
+          <button
+            type="button"
+            class="tracker-cell-btn ${isChecked ? 'checked' : ''}"
+            data-date="${ws.key}"
+            data-task="${ti}"
+            title="${task} - ${DAY_NAMES[(ws.date.getDay() + 6) % 7]} ${ws.date.getDate()}: ${isChecked ? 'Done' : 'Not done'}"
+            aria-label="${task} on ${ws.key}"
+          >
+            <svg viewBox="0 0 24 24" fill="none" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="20 6 9 17 4 12"></polyline>
+            </svg>
+          </button>
+        </td>
+      `;
+        });
+        const taskRatePct = Math.round((taskDoneDays / 7) * 100);
+        html += `<td>${taskDoneDays}/7</td></tr>`;
+      });
+
+      // Daily totals summary footer row
+      html += '<tr><th>Completed</th>';
+      dayDoneTotals.forEach((done) => {
+        html += `<td class="tracker-footer-total">${done}/${DAILY_TASKS.length}</td>`;
+      });
+      html += `<td class="tracker-footer-total">${totalDoneInWeek}/${totalPossible}</td></tr></tbody>`;
+
+      table.innerHTML = html;
+
+      // Add click listeners to tracker cells
+      table.querySelectorAll('.tracker-cell-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const dateKey = btn.dataset.date;
+          const taskIndex = btn.dataset.task;
+          const stateObj = loadDailyStateForDate(dateKey);
+          stateObj[`d${taskIndex}`] = !stateObj[`d${taskIndex}`];
+          saveDailyStateForDate(dateKey, stateObj);
+
+          renderWeekStrip();
+          if (selectedDateKey === dateKey) {
+            renderChecklistView();
+          }
+          renderTrackerMatrix();
+          updateStreakDisplay();
+        });
+      });
+    }
+
+    // Navigation event listeners
+    document.getElementById('prevWeekBtn').addEventListener('click', () => {
+      weekOffset--;
+      const weekDates = getDatesForWeek(weekOffset);
+      selectedDateKey = formatDateKey(weekDates[0]);
+      renderWeekStrip();
+      renderChecklistView();
+      renderTrackerMatrix();
     });
-  });
 
-  weekDiv.appendChild(ul);
-  content.appendChild(weekDiv);
-  updateDailyProgress();
-}
+    document.getElementById('nextWeekBtn').addEventListener('click', () => {
+      weekOffset++;
+      const weekDates = getDatesForWeek(weekOffset);
+      selectedDateKey = formatDateKey(weekDates[0]);
+      renderWeekStrip();
+      renderChecklistView();
+      renderTrackerMatrix();
+    });
 
-document.getElementById('dailyResetBtn').addEventListener('click', async () => {
-  dailyState = {};
-  await saveDailyState();
-  renderDaily();
-});
+    document.getElementById('todayWeekBtn').addEventListener('click', () => {
+      weekOffset = 0;
+      selectedDateKey = getTodayKey();
+      renderWeekStrip();
+      renderChecklistView();
+      renderTrackerMatrix();
+    });
 
-(async function initDaily(){
-  const dateLabel = new Date().toLocaleString('default', { weekday: 'long', month: 'long', day: 'numeric' });
-  document.getElementById('dailyDateLabel').textContent = dateLabel;
-  await loadDailyState();
-  renderDaily();
-})();
+    document.getElementById('jumpToTodayBtn').addEventListener('click', () => {
+      weekOffset = 0;
+      selectedDateKey = getTodayKey();
+      renderWeekStrip();
+      renderChecklistView();
+      renderTrackerMatrix();
+    });
 
-(async function init(){
-  const monthName = new Date().toLocaleString('default', { month: 'long', year: 'numeric' });
-  document.getElementById('monthLabel').textContent = monthName;
-  await loadState();
-  render();
-})();
+    // View switching (Daily Checklist vs Weekly Tracker)
+    document.getElementById('tabChecklistView').addEventListener('click', () => {
+      activeView = 'checklist';
+      document.getElementById('tabChecklistView').classList.add('active');
+      document.getElementById('tabTrackerView').classList.remove('active');
+      document.getElementById('checklistViewContainer').style.display = 'block';
+      document.getElementById('trackerViewContainer').style.display = 'none';
+    });
 
-if ('serviceWorker' in navigator) {
-  window.addEventListener('load', () => {
-    navigator.serviceWorker.register('./sw.js')
-      .then((reg) => console.log('Service Worker registered', reg))
-      .catch((err) => console.error('Service Worker registration failed', err));
-  });
-}
-</script>
+    document.getElementById('tabTrackerView').addEventListener('click', () => {
+      activeView = 'tracker';
+      document.getElementById('tabTrackerView').classList.add('active');
+      document.getElementById('tabChecklistView').classList.remove('active');
+      document.getElementById('checklistViewContainer').style.display = 'none';
+      document.getElementById('trackerViewContainer').style.display = 'block';
+      renderTrackerMatrix();
+    });
+
+    // Reset selected day
+    document.getElementById('dailyResetBtn').addEventListener('click', () => {
+      saveDailyStateForDate(selectedDateKey, {});
+      renderChecklistView();
+      renderWeekStrip();
+      renderTrackerMatrix();
+      updateStreakDisplay();
+    });
+
+    // ==================== INITIALIZATION ====================
+    (function initApp() {
+      selectedDateKey = getTodayKey();
+
+      // Load and render monthly section
+      loadState();
+      renderMonthly();
+
+      // Render weekly & daily tracker section
+      renderWeekStrip();
+      renderChecklistView();
+      renderTrackerMatrix();
+      updateStreakDisplay();
+    })();
+
+    // ==================== SERVICE WORKER ====================
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('./sw.js')
+          .then((reg) => console.log('Service Worker registered', reg))
+          .catch((err) => console.error('Service Worker registration failed', err));
+      });
+    }
+  </script>
 
 </body>
-</html>
 
+</html>
